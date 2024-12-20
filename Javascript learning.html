@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors Game</title>
+    <style>
+        /* General Styling */
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        body {
+            font-family: 'Press Start 2P', cursive;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1d2671, #c33764);
+            color: white;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.7);
+            border: 3px solid #ffcc00;
+            border-radius: 15px;
+            padding: 20px 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 204, 0, 0.7);
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 204, 0, 0.5);
+            }
+            to {
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 60px rgba(255, 204, 0, 1);
+            }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #ffcc00;
+            text-shadow: 0 0 10px #ffcc00, 0 0 20px #ff9900;
+        }
+
+        p {
+            font-size: 1rem;
+            margin: 10px 0;
+            color: #ddd;
+        }
+
+        button {
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            margin: 10px 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 126, 95, 0.5);
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 126, 95, 1);
+        }
+
+        button:active {
+            transform: scale(1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 126, 95, 0.5);
+        }
+
+        #Re {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #ffeb3b;
+            text-shadow: 0 0 10px #ffeb3b, 0 0 20px #ff9800;
+            animation: flicker 1.5s infinite alternate;
+        }
+
+        @keyframes flicker {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0.8;
+            }
+        }
+
+        /* Add a cool background particle effect */
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .background span {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            animation: move 10s linear infinite;
+        }
+
+        @keyframes move {
+            from {
+                transform: translateY(0px);
+            }
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        .background span:nth-child(odd) {
+            animation-duration: 8s;
+        }
+
+        /* Generate random positioning for particles */
+        .background span:nth-child(1) { left: 5%; animation-delay: 0s; }
+        .background span:nth-child(2) { left: 20%; animation-delay: 2s; }
+        .background span:nth-child(3) { left: 40%; animation-delay: 4s; }
+        .background span:nth-child(4) { left: 60%; animation-delay: 6s; }
+        .background span:nth-child(5) { left: 80%; animation-delay: 8s; }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <!-- Add particles -->
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="container">
+        <h1>Rock Paper Scissors</h1>
+        <p>Choose one to play:</p>
+        <button onclick="changeRock()">Rock</button>
+        <button onclick="changePaper()">Paper</button>
+        <button onclick="changeScissor()">Scissors</button>
+        <p id="Re">Make your move!</p>
+    </div>
+
+    <script>
+        const pTag = document.querySelector("#Re");
+
+        function playGame(userChoice) {
+            const choices = ["Scissors", "Paper", "Rock"];
+            const bot = Math.floor(Math.random() * 3);
+            const botChoice = choices[bot];
+
+            if (userChoice === botChoice) {
+                pTag.innerHTML = `It's a tie! Bot chose: ${botChoice}`;
+            } else if (
+                (userChoice === "Rock" && botChoice === "Scissors") ||
+                (userChoice === "Paper" && botChoice === "Rock") ||
+                (userChoice === "Scissors" && botChoice === "Paper")
+            ) {
+                pTag.innerHTML = `You win! Bot chose: ${botChoice}`;
+            } else {
+                pTag.innerHTML = `You lose! Bot chose: ${botChoice}`;
+            }
+        }
+
+        function changeRock() {
+            playGame("Rock");
+        }
+
+        function changePaper() {
+            playGame("Paper");
+        }
+
+        function changeScissor() {
+            playGame("Scissors");
+        }
+    </script>
+</body>
+</html>
